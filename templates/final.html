@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #f5f7fa;
+    padding: 20px;
+    transition: 0.3s;
+}
+
+.dark {
+    background: #121212;
+    color: white;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 15px;
+    width: 65%;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.dark .card {
+    background: #1e1e1e;
+}
+
+.bar {
+    background: #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.fill {
+    background: linear-gradient(90deg, #4CAF50, #81C784);
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+.green { color: green; font-weight: bold; }
+.red { color: red; font-weight: bold; }
+.orange { color: orange; font-weight: bold; }
+
+button {
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 8px;
+    background: #667eea;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #5a67d8;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #ddd;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Dark Mode -->
+<button onclick="toggleMode()">🌙 Toggle Dark Mode</button>
+
+<h2 style="text-align:center;">✅ Assessment Completed</h2>
+
+<!-- SCORE -->
+<div class="card">
+    <h3>📄 Resume Score: {{score}}%</h3>
+    <h3>🧠 Answer Score: {{answer_score}}%</h3>
+    <h2>🎯 Final Score: {{overall}}%</h2>
+
+    <div class="bar">
+        <div class="fill" style="width: {{overall}}%">{{overall}}%</div>
+    </div>
+
+    <h3 class="
+    {% if overall > 75 %}green
+    {% elif overall > 50 %}orange
+    {% else %}red
+    {% endif %}
+    ">
+    🎯 {{decision}}
+    </h3>
+</div>
+
+<!-- 📊 CHART -->
+<div class="card">
+    <h3>📊 Performance Chart</h3>
+    <canvas id="chart"></canvas>
+</div>
+
+<!-- 🧠 AI SUMMARY -->
+<div class="card">
+    <h3>🧠 AI Summary</h3>
+    <p>{{summary}}</p>
+</div>
+
+<!-- ❌ MISSING SKILLS -->
+<div class="card">
+    <h3>❌ Missing Skills</h3>
+
+    {% if missing %}
+    <ul>
+        {% for skill in missing %}
+        <li class="red">{{skill}}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p class="green">No major skill gaps 🎉</p>
+    {% endif %}
+</div>
+
+<!-- 📚 LEARNING PLAN -->
+<div class="card">
+    <h3>📚 Learning Plan</h3>
+
+    <ul>
+    {% for skill,data in plan.items() %}
+        <li>
+            <b>{{skill}}</b> → {{data.resource}} ({{data.time}})
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+
+<!-- 🧠 ANSWER EVALUATION -->
+<div class="card">
+    <h3>🧠 Answer Evaluation</h3>
+
+    {% for q, a, r in results %}
+    <p><b>Q:</b> {{q}}</p>
+    <p><b>Your Answer:</b> {{a}}</p>
+    <p class="{% if r %}green{% else %}red{% endif %}">
+        {{ "✔ Correct" if r else "❌ Needs Improvement" }}
+    </p>
+    <hr>
+    {% endfor %}
+</div>
+
+<!-- 🏆 LEADERBOARD -->
+<div class="card">
+    <h3>🏆 Leaderboard</h3>
+    <ol>
+        {% for user in leaderboard %}
+        <li>{{user.name}} - {{user.score}}%</li>
+        {% endfor %}
+    </ol>
+</div>
+
+<!-- 📄 DOWNLOAD -->
+<div style="text-align:center;">
+    <a href="/download">
+        <button>📄 Download Report</button>
+    </a>
+</div>
+
+<!-- SCRIPTS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+new Chart(document.getElementById("chart"), {
+    type: 'bar',
+    data: {
+        labels: ['Resume Score', 'Answer Score'],
+        datasets: [{
+            label: 'Scores',
+            data: [{{score}}, {{answer_score}}],
+        }]
+    }
+});
+
+function toggleMode() {
+    document.body.classList.toggle("dark");
+}
+</script>
+
+</body>
+</html>

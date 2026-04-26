@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    margin: 0;
+    padding: 0;
+    color: white;
+}
+
+.container {
+    text-align: center;
+    padding-top: 50px;
+}
+
+.box {
+    background: white;
+    color: black;
+    padding: 30px;
+    border-radius: 15px;
+    width: 45%;
+    margin: auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    transition: 0.3s;
+}
+
+.box:hover {
+    transform: scale(1.02);
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+textarea, input {
+    width: 90%;
+    padding: 12px;
+    margin: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+button {
+    padding: 12px 25px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #5a67d8;
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🤖 AI Hiring Assistant</h1>
+
+    <div class="box">
+
+        {% if error %}
+        <p class="error">{{error}}</p>
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data">
+
+            <h3>📄 Job Description</h3>
+            <textarea name="jd" rows="5" required></textarea>
+
+            <h3>📎 Upload Resume (PDF only)</h3>
+            <input type="file" name="resume_file" accept=".pdf" required>
+
+            <br><br>
+            <button onclick="this.innerText='Analyzing...'">Analyze</button>
+
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

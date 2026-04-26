@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.box {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    width: 50%;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+#timer {
+    color: red;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.question {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+textarea {
+    width: 90%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    resize: none;
+}
+
+button {
+    padding: 10px 20px;
+    margin-top: 15px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #5a67d8;
+}
+
+.code-label {
+    color: #ff5722;
+    font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+
+    <h2>🤖 AI Assessment</h2>
+
+    <!-- TIMER -->
+    <div id="timer">Time Left: 60s</div>
+
+    <!-- QUESTION -->
+    <div class="question">
+
+        {% if "write" in question.lower() %}
+            <span class="code-label">🧑‍💻 Coding Question:</span><br>
+        {% endif %}
+
+        {{question}}
+
+    </div>
+
+    <!-- ANSWER FORM -->
+    <form method="POST">
+        <textarea name="answer" rows="4" placeholder="Type your answer here..." required></textarea>
+
+        <br>
+        <button type="submit">Next</button>
+    </form>
+
+</div>
+
+<!-- TIMER SCRIPT -->
+<script>
+let time = 60;
+let timer = document.getElementById("timer");
+
+let countdown = setInterval(() => {
+    time--;
+    timer.innerText = "Time Left: " + time + "s";
+
+    if (time <= 0) {
+        clearInterval(countdown);
+        document.forms[0].submit();
+    }
+}, 1000);
+</script>
+
+</body>
+</html>
