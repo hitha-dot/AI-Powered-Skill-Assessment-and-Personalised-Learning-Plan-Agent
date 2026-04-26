@@ -67,12 +67,12 @@ hr {
 
 <body>
 
-<!-- Dark Mode -->
+<!-- 🌙 DARK MODE -->
 <button onclick="toggleMode()">🌙 Toggle Dark Mode</button>
 
 <h2 style="text-align:center;">✅ Assessment Completed</h2>
 
-<!-- SCORE -->
+<!-- 🎯 SCORE -->
 <div class="card">
     <h3>📄 Resume Score: {{score}}%</h3>
     <h3>🧠 Answer Score: {{answer_score}}%</h3>
@@ -125,9 +125,7 @@ hr {
 
     <ul>
     {% for skill,data in plan.items() %}
-        <li>
-            <b>{{skill}}</b> → {{data.resource}} ({{data.time}})
-        </li>
+        <li><b>{{skill}}</b> → {{data.resource}} ({{data.time}})</li>
     {% endfor %}
     </ul>
 </div>
@@ -156,9 +154,9 @@ hr {
     </ol>
 </div>
 
-<!-- 📄 DOWNLOAD -->
+<!-- 📄 DOWNLOAD REPORT -->
 <div style="text-align:center;">
-    <a href="/download">
+    <a href="{{ url_for('download') }}">
         <button>📄 Download Report</button>
     </a>
 </div>
