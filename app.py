@@ -23,7 +23,6 @@ general_questions = [
     "What is database?", "What is cloud computing?"
 ]
 
-# 🔥 NEW CODING QUESTIONS
 coding_questions = [
     "Write a Python program to check if a number is prime.",
     "Write a program to reverse a string."
@@ -79,7 +78,7 @@ def home():
         matched, missing = match_skills(jd_skills, resume_skills)
         resume_score = score(jd_skills, matched)
 
-        # -------- QUESTIONS --------
+        # QUESTIONS
         questions=[]
         for skill in matched:
             if skill in questions_db:
@@ -90,17 +89,15 @@ def home():
 
         random.shuffle(questions)
         questions = questions[:10]
-
-        # 🔥 ADD CODING QUESTIONS
         questions.extend(coding_questions)
 
-        # -------- SUMMARY --------
+        # SUMMARY
         strengths = ", ".join(matched) if matched else "No strong skills"
         gaps = ", ".join(missing) if missing else "No major gaps"
 
         summary = f"Candidate shows strengths in {strengths}. Improvement needed in {gaps}."
 
-        # -------- PLAN --------
+        # PLAN
         plan = {}
         if missing:
             for skill in missing:
@@ -159,12 +156,10 @@ def final():
         q=questions[i].lower()
         is_correct=False
 
-        # 🔥 CODING QUESTION CHECK
         if "write" in q:
             if len(ans.strip()) > 10:
                 correct += 1
                 is_correct = True
-
         else:
             for skill,words in answer_keywords.items():
                 if skill in q:
@@ -202,6 +197,24 @@ def final():
         plan=session.get("plan"),
         summary=session.get("summary")
     )
+
+
+# 🔥 FIXED DOWNLOAD ROUTE
+@app.route("/download")
+def download():
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(buffer)
+    styles = getSampleStyleSheet()
+
+    content=[]
+    content.append(Paragraph("Assessment Report",styles['Title']))
+    content.append(Paragraph(f"Resume Score: {session.get('score')}%",styles['Normal']))
+    content.append(Paragraph(f"Summary: {session.get('summary')}",styles['Normal']))
+
+    doc.build(content)
+    buffer.seek(0)
+
+    return send_file(buffer, as_attachment=True, download_name="report.pdf")
 
 
 if __name__=="__main__":
